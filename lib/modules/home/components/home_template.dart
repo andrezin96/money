@@ -67,6 +67,7 @@ class HomeTemplate extends StatelessWidget {
                           labelFontSize: 18,
                           valueFontSize: 18,
                           value: state.total.toCurrency,
+                          onLongPress: controller.deleteBudget,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

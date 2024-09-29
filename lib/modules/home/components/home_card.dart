@@ -11,6 +11,7 @@ class HomeCard extends StatelessWidget {
     this.onTap,
     this.labelFontSize,
     this.valueFontSize,
+    this.onLongPress,
   });
 
   final String label;
@@ -21,11 +22,13 @@ class HomeCard extends StatelessWidget {
   final double? width;
   final EdgeInsetsGeometry? margin;
   final void Function()? onTap;
+  final void Function()? onLongPress;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      onLongPress: onLongPress,
       child: Container(
         height: height,
         width: width,
