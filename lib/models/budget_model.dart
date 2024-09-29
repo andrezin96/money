@@ -9,15 +9,11 @@ enum ValueType {
 
 class BudgetModel {
   const BudgetModel({
-    required this.description,
-    required this.type,
     required this.values,
     required this.creditsTotal,
     required this.debitsTotal,
     required this.total,
   });
-  final String description;
-  final ValueType type;
   final List<MoneyType> values;
   final double creditsTotal;
   final double debitsTotal;
@@ -25,16 +21,12 @@ class BudgetModel {
 
   BudgetModel copyWith({
     String? description,
-    ValueType? type,
     List<MoneyType>? values,
-    List<MoneyType>? debits,
     double? creditsTotal,
     double? debitsTotal,
     double? total,
   }) {
     return BudgetModel(
-      description: description ?? this.description,
-      type: type ?? this.type,
       values: values ?? this.values,
       creditsTotal: creditsTotal ?? this.creditsTotal,
       debitsTotal: debitsTotal ?? this.debitsTotal,
@@ -44,8 +36,6 @@ class BudgetModel {
 
   factory BudgetModel.empty() {
     return const BudgetModel(
-      description: '',
-      type: ValueType.none,
       values: [],
       creditsTotal: 0,
       debitsTotal: 0,
@@ -55,8 +45,6 @@ class BudgetModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'description': description,
-      'type': type.name,
       'values': values.map((value) => value.toMap()).toList(),
       'creditsTotal': creditsTotal,
       'debitsTotal': debitsTotal,
@@ -66,8 +54,6 @@ class BudgetModel {
 
   factory BudgetModel.fromMap(Map<String, dynamic> map) {
     return BudgetModel(
-      description: map['description'] as String,
-      type: ValueType.values.byName(map['type'] as String),
       values: (map['values'] as List? ?? []).map((value) => MoneyType.fromMap(value as Map<String, dynamic>)).toList(),
       creditsTotal: map['creditsTotal'] as double,
       debitsTotal: map['debitsTotal'] as double,
@@ -83,24 +69,29 @@ class BudgetModel {
 class MoneyType {
   const MoneyType({
     required this.description,
+    required this.type,
     required this.value,
   });
   final String description;
+  final ValueType type;
   final double value;
 
   MoneyType copyWith({
     String? description,
+    ValueType? type,
     double? value,
   }) {
     return MoneyType(
-      description: description ?? '',
-      value: value ?? 0,
+      description: description ?? this.description,
+      type: type ?? this.type,
+      value: value ?? this.value,
     );
   }
 
   factory MoneyType.empty() {
     return const MoneyType(
       description: '',
+      type: ValueType.none,
       value: 0,
     );
   }
@@ -108,6 +99,7 @@ class MoneyType {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'description': description,
+      'type': type.name,
       'value': value,
     };
   }
@@ -115,6 +107,7 @@ class MoneyType {
   factory MoneyType.fromMap(Map<String, dynamic> map) {
     return MoneyType(
       description: map['description'] as String,
+      type: ValueType.values.byName(map['type'] as String),
       value: map['value'] as double,
     );
   }

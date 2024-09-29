@@ -9,10 +9,14 @@ class HomeCard extends StatelessWidget {
     this.height,
     this.width,
     this.onTap,
+    this.labelFontSize,
+    this.valueFontSize,
   });
 
   final String label;
   final String value;
+  final double? labelFontSize;
+  final double? valueFontSize;
   final double? height;
   final double? width;
   final EdgeInsetsGeometry? margin;
@@ -35,11 +39,11 @@ class HomeCard extends StatelessWidget {
           children: [
             Text(
               label,
-              style: const TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: labelFontSize ?? 16),
             ),
             Text(
               value,
-              style: const TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: valueFontSize ?? 16),
             ),
           ],
         ),

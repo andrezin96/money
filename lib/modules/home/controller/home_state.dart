@@ -29,6 +29,14 @@ final class HomeMoneyAdded extends HomeState {
   const HomeMoneyAdded(super.budget);
 }
 
+final class HomeValueRemoved extends HomeState {
+  const HomeValueRemoved(super.budget);
+}
+
+final class HomeValueEdited extends HomeState {
+  const HomeValueEdited(super.budget);
+}
+
 final class HomeError extends HomeState {
   const HomeError(super.budget, this.error);
 
