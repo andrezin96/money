@@ -13,7 +13,7 @@ class _GetItImpl implements Injector {
   }
 
   void _register() {
-    GetIt.I.registerSingleton(HomeCubit.new);
+    GetIt.I.registerSingleton<HomeCubit>(HomeCubit());
   }
 
   @override
