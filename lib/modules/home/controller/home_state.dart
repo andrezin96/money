@@ -1,26 +1,39 @@
 part of 'home_cubit.dart';
 
 sealed class HomeState extends Equatable {
-  const HomeState(this.list);
+  const HomeState(this.budget);
 
-  final List<MoneyModel> list;
+  final BudgetModel budget;
+
+  double get creditsTotal => budget.creditsTotal;
+  double get debitsTotal => budget.debitsTotal;
+  double get total => budget.total;
 
   @override
-  List<Object> get props => [list];
+  List<Object> get props => [budget];
 }
 
 final class HomeInitial extends HomeState {
-  const HomeInitial(super.list);
+  const HomeInitial(super.budget);
 }
 
 final class HomeLoading extends HomeState {
-  const HomeLoading(super.list);
+  const HomeLoading(super.budget);
 }
 
 final class HomeLoaded extends HomeState {
-  const HomeLoaded(super.list);
+  const HomeLoaded(super.budget);
+}
+
+final class HomeMoneyAdded extends HomeState {
+  const HomeMoneyAdded(super.budget);
 }
 
 final class HomeError extends HomeState {
-  const HomeError(super.list);
+  const HomeError(super.budget, this.error);
+
+  final String error;
+
+  @override
+  List<Object> get props => [error];
 }

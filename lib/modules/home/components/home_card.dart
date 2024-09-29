@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/core.dart';
-
 class HomeCard extends StatelessWidget {
   const HomeCard({
     super.key,
@@ -40,7 +38,7 @@ class HomeCard extends StatelessWidget {
               style: const TextStyle(fontSize: 16),
             ),
             Text(
-              double.parse(value).toCurrency,
+              value,
               style: const TextStyle(fontSize: 16),
             ),
           ],
