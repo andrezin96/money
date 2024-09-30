@@ -69,7 +69,7 @@ class HomeCubit extends Cubit<HomeState> {
     final result = await _saveLocalBudget(budget);
     if (result) {
       emit(HomeMoneyAdded(budget));
-      _clearController();
+      clearController();
     }
   }
 
@@ -93,7 +93,7 @@ class HomeCubit extends Cubit<HomeState> {
       final result = await _saveLocalBudget(budget);
       if (result) {
         emit(HomeValueEdited(budget));
-        _clearController();
+        clearController();
       }
     }
   }
@@ -110,10 +110,10 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> deleteBudget() async {
     await localStorage.remove(KeysStorage.budget);
     emit(HomeInitial(BudgetModel.empty()));
-    _clearController();
+    clearController();
   }
 
-  void _clearController() {
+  void clearController() {
     descriptionController.clear();
     valueController.clear();
   }

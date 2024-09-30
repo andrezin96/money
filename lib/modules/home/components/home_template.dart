@@ -31,6 +31,7 @@ class HomeTemplate extends StatelessWidget {
           confirmButton.call();
           Navigator.pop(context);
         },
+        cancelButton: controller.clearController,
       ),
     );
   }
@@ -99,16 +100,13 @@ class HomeTemplate extends StatelessWidget {
                   ),
                   Expanded(
                     child: ListView.builder(
+                      reverse: true,
                       itemCount: state.budget.values.length,
                       itemBuilder: (context, index) {
                         final item = state.budget.values[index];
                         return ListTile(
                           title: Text(item.description),
                           subtitle: Text(item.value.toCurrency),
-                          trailing: IconButton(
-                            onPressed: () => controller.deleteBudgetValue(index),
-                            icon: const Icon(Icons.delete),
-                          ),
                           leading: Icon(
                             item.type == ValueType.credit ? Icons.arrow_downward : Icons.arrow_upward,
                             color: item.type == ValueType.credit ? Colors.green : Colors.red,
@@ -121,6 +119,7 @@ class HomeTemplate extends StatelessWidget {
                               confirmButton: () => controller.editBudgetValue(index),
                             );
                           },
+                          onLongPress: () => controller.deleteBudgetValue(index),
                         );
                       },
                     ),
