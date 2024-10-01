@@ -28,10 +28,13 @@ class HomeTemplate extends StatelessWidget {
         descriptionController: controller.descriptionController,
         valueController: controller.valueController,
         confirmButton: () {
+          Navigator.pop(context);
           confirmButton.call();
+        },
+        cancelButton: () {
+          controller.clearController();
           Navigator.pop(context);
         },
-        cancelButton: controller.clearController,
       ),
     );
   }
@@ -100,7 +103,6 @@ class HomeTemplate extends StatelessWidget {
                   ),
                   Expanded(
                     child: ListView.builder(
-                      reverse: true,
                       itemCount: state.budget.values.length,
                       itemBuilder: (context, index) {
                         final item = state.budget.values[index];

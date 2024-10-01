@@ -62,7 +62,7 @@ class HomeBottomSheet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () => cancelButton ?? Navigator.pop(context),
+                  onPressed: cancelButton,
                   child: const Text('Cancelar'),
                 ),
                 TextButton(

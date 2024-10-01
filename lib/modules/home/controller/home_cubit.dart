@@ -39,16 +39,21 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+  Iterable<MoneyType> _incrementElement(BudgetModel budget, ValueType type) {
+    return budget.values.where((element) => element.type == type);
+  }
+
+  double _sumElements(Iterable<MoneyType> list) {
+    return list.fold<double>(0, (previousValue, element) => previousValue + element.value);
+  }
+
   BudgetModel _sumTotal(BudgetModel budget) {
-    final creditValues = budget.values.where((element) => element.type == ValueType.credit);
-    final debitsValues = budget.values.where((element) => element.type == ValueType.debit);
-    final credits = creditValues.fold<double>(0, (previousValue, element) => previousValue + element.value);
-    final debits = debitsValues.fold<double>(0, (previousValue, element) => previousValue + element.value);
-    final total = credits - debits;
+    final creditValues = _incrementElement(budget, ValueType.credit);
+    final debitsValues = _incrementElement(budget, ValueType.debit);
     return budget.copyWith(
-      creditsTotal: credits,
-      debitsTotal: debits,
-      total: total,
+      creditsTotal: _sumElements(creditValues),
+      debitsTotal: _sumElements(debitsValues),
+      total: _sumElements(creditValues) - _sumElements(debitsValues),
     );
   }
 
