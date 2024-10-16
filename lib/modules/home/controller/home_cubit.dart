@@ -121,11 +121,9 @@ class HomeCubit extends Cubit<HomeState> {
 
   void deleteBudgetValue(int index) {
     final budget = state.budget.copyWith();
-    if (budget.values.length == 1) {
+    if (budget.values.isNotEmpty) {
       budget.values.removeAt(index);
       emit(HomeValueRemoved(_sumTotal(budget)));
-    } else {
-      deleteBudget();
     }
     _saveLocalBudget(budget);
   }
