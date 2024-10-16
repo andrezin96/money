@@ -11,11 +11,15 @@ class HomeBottomSheet extends StatelessWidget {
     this.confirmButton,
     required this.descriptionController,
     required this.valueController,
+    required this.dateController,
+    this.onTap,
   });
 
   final String label;
   final TextEditingController descriptionController;
   final TextEditingController valueController;
+  final TextEditingController dateController;
+  final void Function()? onTap;
   final void Function()? cancelButton;
   final void Function()? confirmButton;
 
@@ -44,19 +48,33 @@ class HomeBottomSheet extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: TextFormField(
-                controller: valueController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  CurrencyMoney.formatter,
-                  LengthLimitingTextInputFormatter(16),
-                ],
-                decoration: const InputDecoration(
-                  hintText: r'R$ 0,00',
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: MediaQuery.sizeOf(context).width * 0.54,
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: TextFormField(
+                    controller: valueController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      CurrencyMoney.formatter,
+                      LengthLimitingTextInputFormatter(16),
+                    ],
+                    decoration: const InputDecoration(
+                      hintText: r'R$ 0,00',
+                    ),
+                  ),
                 ),
-              ),
+                Container(
+                  width: MediaQuery.sizeOf(context).width * 0.26,
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: TextFormField(
+                    controller: dateController,
+                    onTap: onTap,
+                  ),
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,

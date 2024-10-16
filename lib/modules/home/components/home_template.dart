@@ -27,6 +27,17 @@ class HomeTemplate extends StatelessWidget {
         label: label,
         descriptionController: controller.descriptionController,
         valueController: controller.valueController,
+        dateController: controller.dateController,
+        onTap: () async => controller.setDateTime(
+          await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2100),
+            cancelText: 'Cancelar',
+            confirmText: 'OK',
+          ),
+        ),
         confirmButton: () {
           Navigator.pop(context);
           confirmButton.call();
@@ -80,21 +91,27 @@ class HomeTemplate extends StatelessWidget {
                               width: MediaQuery.sizeOf(context).width * 0.4,
                               label: 'Entradas',
                               value: state.creditsTotal.toCurrency,
-                              onTap: () => showHomeBottomSheet(
-                                context: context,
-                                label: 'Nova Entrada',
-                                confirmButton: () => controller.saveBudget(ValueType.credit),
-                              ),
+                              onTap: () {
+                                controller.setDateTime(DateTime.now());
+                                showHomeBottomSheet(
+                                  context: context,
+                                  label: 'Nova Entrada',
+                                  confirmButton: () => controller.saveBudget(ValueType.credit),
+                                );
+                              },
                             ),
                             HomeCard(
                               width: MediaQuery.sizeOf(context).width * 0.4,
                               label: 'Saídas',
                               value: state.debitsTotal.toCurrency,
-                              onTap: () => showHomeBottomSheet(
-                                context: context,
-                                label: 'Nova Saída',
-                                confirmButton: () => controller.saveBudget(ValueType.debit),
-                              ),
+                              onTap: () {
+                                controller.setDateTime(DateTime.now());
+                                showHomeBottomSheet(
+                                  context: context,
+                                  label: 'Nova Saída',
+                                  confirmButton: () => controller.saveBudget(ValueType.debit),
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -107,7 +124,7 @@ class HomeTemplate extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final item = state.budget.values[index];
                         return ListTile(
-                          title: Text(item.description),
+                          title: Text('${item.description} - ${controller.dateFormater(item.date)}'),
                           subtitle: Text(item.value.toCurrency),
                           leading: Icon(
                             item.type == ValueType.credit ? Icons.arrow_downward : Icons.arrow_upward,

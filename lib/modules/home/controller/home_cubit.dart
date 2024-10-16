@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../../../cache/cache.dart';
 import '../../../core/helpers/currency_money.dart';
@@ -13,6 +14,15 @@ class HomeCubit extends Cubit<HomeState> {
 
   TextEditingController valueController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+
+  String dateFormater(DateTime date) {
+    return DateFormat('dd/MM/yyyy').format(date);
+  }
+
+  String setDateTime(DateTime? date) {
+    return dateController.text = dateFormater(date ?? DateTime.now());
+  }
 
   Future<void> getLocalBudget() async {
     emit(HomeLoading(state.budget));
@@ -63,11 +73,13 @@ class HomeCubit extends Cubit<HomeState> {
       ..add(
         MoneyType(
           description: descriptionController.text,
+          date: DateFormat('dd/MM/yyyy').parse(dateController.text),
           type: type,
           value: valueController.text.toCurrencyOriginal,
         ),
       );
 
+    updatedValues.sort((a, b) => b.date.compareTo(a.date));
     final updatedBudget = state.budget.copyWith(values: updatedValues);
     final budget = _sumTotal(updatedBudget);
 
@@ -82,6 +94,7 @@ class HomeCubit extends Cubit<HomeState> {
     final budget = state.budget.copyWith();
     if (budget.values.isNotEmpty) {
       descriptionController.text = budget.values[index].description;
+      dateController.text = DateFormat('dd/MM/yyyy').format(budget.values[index].date);
       valueController.text = budget.values[index].value.toCurrencyInitial;
     }
   }
@@ -91,13 +104,16 @@ class HomeCubit extends Cubit<HomeState> {
     if (budget.values.isNotEmpty) {
       budget.values[index] = MoneyType(
         description: descriptionController.text,
+        date: DateFormat('dd/MM/yyyy').parse(dateController.text),
         type: budget.values[index].type,
         value: valueController.text.toCurrencyOriginal,
       );
 
+      budget.values.sort((a, b) => a.date.compareTo(b.date));
+
       final result = await _saveLocalBudget(budget);
       if (result) {
-        emit(HomeValueEdited(budget));
+        emit(HomeValueEdited(_sumTotal(budget)));
         clearController();
       }
     }
@@ -121,5 +137,6 @@ class HomeCubit extends Cubit<HomeState> {
   void clearController() {
     descriptionController.clear();
     valueController.clear();
+    dateController.clear();
   }
 }

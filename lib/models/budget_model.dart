@@ -69,28 +69,34 @@ class BudgetModel {
 class MoneyType {
   const MoneyType({
     required this.description,
+    required this.date,
     required this.type,
     required this.value,
   });
+
   final String description;
+  final DateTime date;
   final ValueType type;
   final double value;
 
   MoneyType copyWith({
     String? description,
+    DateTime? date,
     ValueType? type,
     double? value,
   }) {
     return MoneyType(
       description: description ?? this.description,
+      date: date ?? this.date,
       type: type ?? this.type,
       value: value ?? this.value,
     );
   }
 
   factory MoneyType.empty() {
-    return const MoneyType(
+    return MoneyType(
       description: '',
+      date: DateTime.now(),
       type: ValueType.none,
       value: 0,
     );
@@ -99,6 +105,7 @@ class MoneyType {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'description': description,
+      'date': date.toIso8601String(),
       'type': type.name,
       'value': value,
     };
@@ -107,6 +114,7 @@ class MoneyType {
   factory MoneyType.fromMap(Map<String, dynamic> map) {
     return MoneyType(
       description: map['description'] as String,
+      date: DateTime.parse(map['date'] as String),
       type: ValueType.values.byName(map['type'] as String),
       value: map['value'] as double,
     );
