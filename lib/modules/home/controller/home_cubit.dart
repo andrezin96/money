@@ -109,7 +109,7 @@ class HomeCubit extends Cubit<HomeState> {
         value: valueController.text.toCurrencyOriginal,
       );
 
-      budget.values.sort((a, b) => a.date.compareTo(b.date));
+      budget.values.sort((a, b) => b.date.compareTo(a.date));
 
       final result = await _saveLocalBudget(budget);
       if (result) {
