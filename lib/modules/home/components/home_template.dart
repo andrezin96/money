@@ -35,8 +35,6 @@ class HomeTemplate extends StatelessWidget {
             initialDate: DateTime.now(),
             firstDate: DateTime(2000),
             lastDate: DateTime(2100),
-            cancelText: 'Cancelar',
-            confirmText: 'OK',
           ),
         ),
         confirmButton: () {

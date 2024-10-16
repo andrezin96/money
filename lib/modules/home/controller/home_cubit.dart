@@ -73,7 +73,7 @@ class HomeCubit extends Cubit<HomeState> {
       ..add(
         MoneyType(
           description: descriptionController.text,
-          date: DateFormat('dd/MM/yyyy').parse(dateController.text),
+          date: DateFormat('dd/MM/yyyy HH:mm:ss').parse(dateController.text),
           type: type,
           value: valueController.text.toCurrencyOriginal,
         ),
@@ -94,7 +94,7 @@ class HomeCubit extends Cubit<HomeState> {
     final budget = state.budget.copyWith();
     if (budget.values.isNotEmpty) {
       descriptionController.text = budget.values[index].description;
-      dateController.text = DateFormat('dd/MM/yyyy').format(budget.values[index].date);
+      dateController.text = DateFormat('dd/MM/yyyy HH:mm:ss').format(budget.values[index].date);
       valueController.text = budget.values[index].value.toCurrencyInitial;
     }
   }
@@ -104,7 +104,7 @@ class HomeCubit extends Cubit<HomeState> {
     if (budget.values.isNotEmpty) {
       budget.values[index] = MoneyType(
         description: descriptionController.text,
-        date: DateFormat('dd/MM/yyyy').parse(dateController.text),
+        date: DateFormat('dd/MM/yyyy HH:mm:ss').parse(dateController.text),
         type: budget.values[index].type,
         value: valueController.text.toCurrencyOriginal,
       );
