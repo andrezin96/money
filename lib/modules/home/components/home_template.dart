@@ -6,6 +6,7 @@ import '../../../models/budget_model.dart';
 import '../controller/home_cubit.dart';
 import 'home_bottom_sheet.dart';
 import 'home_card.dart';
+import 'home_dialog.dart';
 
 class HomeTemplate extends StatelessWidget {
   const HomeTemplate({
@@ -50,6 +51,20 @@ class HomeTemplate extends StatelessWidget {
     );
   }
 
+  Future<void> showConfirmDialog(BuildContext context, String title, {required void Function() confirmButton}) {
+    return showDialog<void>(
+      context: context,
+      builder: (context) => HomeDialog(
+        title: title,
+        cancelButton: () => Navigator.pop(context),
+        confirmButton: () {
+          confirmButton.call();
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
@@ -82,7 +97,11 @@ class HomeTemplate extends StatelessWidget {
                           labelFontSize: 18,
                           valueFontSize: 18,
                           value: state.total.toCurrency,
-                          onLongPress: controller.deleteBudget,
+                          onLongPress: () => showConfirmDialog(
+                            context,
+                            'Deseja realmente apagar tudo?',
+                            confirmButton: controller.deleteBudget,
+                          ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -138,7 +157,11 @@ class HomeTemplate extends StatelessWidget {
                               confirmButton: () => controller.editBudgetValue(index),
                             );
                           },
-                          onLongPress: () => controller.deleteBudgetValue(index),
+                          onLongPress: () => showConfirmDialog(
+                            context,
+                            'Deseja realmente apagar?',
+                            confirmButton: () => controller.deleteBudgetValue(index),
+                          ),
                         );
                       },
                     ),
