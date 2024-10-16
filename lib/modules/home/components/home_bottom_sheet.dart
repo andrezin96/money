@@ -52,7 +52,7 @@ class HomeBottomSheet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: MediaQuery.sizeOf(context).width * 0.6,
+                  width: MediaQuery.sizeOf(context).width * 0.54,
                   padding: const EdgeInsets.only(bottom: 16),
                   child: TextFormField(
                     controller: valueController,
@@ -67,7 +67,7 @@ class HomeBottomSheet extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.sizeOf(context).width * 0.22,
+                  width: MediaQuery.sizeOf(context).width * 0.26,
                   padding: const EdgeInsets.only(bottom: 16),
                   child: TextFormField(
                     controller: dateController,

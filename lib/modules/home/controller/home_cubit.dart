@@ -17,7 +17,7 @@ class HomeCubit extends Cubit<HomeState> {
   TextEditingController dateController = TextEditingController();
 
   String dateFormater(DateTime date) {
-    return DateFormat('dd/MM/yyyy').format(date);
+    return DateFormat('dd/MM/yyyy HH:mm:ss').format(date);
   }
 
   String setDateTime(DateTime? date) {

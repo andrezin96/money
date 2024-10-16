@@ -141,7 +141,8 @@ class HomeTemplate extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final item = state.budget.values[index];
                         return ListTile(
-                          title: Text('${item.description} - ${controller.dateFormater(item.date)}'),
+                          title: Text(
+                              '${item.description} - ${controller.dateFormater(item.date)} - ${controller.dateFormater(item.date).split(' ')[0]}'),
                           subtitle: Text(item.value.toCurrency),
                           leading: Icon(
                             item.type == ValueType.credit ? Icons.arrow_downward : Icons.arrow_upward,
