@@ -67,9 +67,10 @@ class HomeBottomSheet extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.sizeOf(context).width * 0.26,
+                  width: MediaQuery.sizeOf(context).width * 0.22,
                   padding: const EdgeInsets.only(bottom: 16),
                   child: TextFormField(
+                    readOnly: true,
                     controller: dateController,
                     onTap: onTap,
                   ),
