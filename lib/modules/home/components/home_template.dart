@@ -7,6 +7,7 @@ import '../controller/home_cubit.dart';
 import 'home_bottom_sheet.dart';
 import 'home_card.dart';
 import 'home_dialog.dart';
+import 'home_tile.dart';
 
 class HomeTemplate extends StatelessWidget {
   const HomeTemplate({
@@ -76,98 +77,101 @@ class HomeTemplate extends StatelessWidget {
         return Scaffold(
           body: SafeArea(
             bottom: false,
-            child: Padding(
-              padding: const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 16),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[900],
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      children: [
-                        HomeCard(
-                          width: double.infinity,
-                          margin: const EdgeInsets.only(bottom: 16),
-                          label: 'Saldo',
-                          labelFontSize: 18,
-                          valueFontSize: 18,
-                          value: state.total.toCurrency,
-                          onLongPress: () => showConfirmDialog(
-                            context,
-                            'Deseja realmente apagar tudo?',
-                            confirmButton: controller.deleteBudget,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            HomeCard(
-                              width: MediaQuery.sizeOf(context).width * 0.4,
-                              label: 'Entradas',
-                              value: state.creditsTotal.toCurrency,
-                              onTap: () {
-                                controller.setDateTime(DateTime.now());
-                                showHomeBottomSheet(
-                                  context: context,
-                                  label: 'Nova Entrada',
-                                  confirmButton: () => controller.saveBudget(ValueType.credit),
-                                );
-                              },
-                            ),
-                            HomeCard(
-                              width: MediaQuery.sizeOf(context).width * 0.4,
-                              label: 'Saídas',
-                              value: state.debitsTotal.toCurrency,
-                              onTap: () {
-                                controller.setDateTime(DateTime.now());
-                                showHomeBottomSheet(
-                                  context: context,
-                                  label: 'Nova Saída',
-                                  confirmButton: () => controller.saveBudget(ValueType.debit),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  margin: const EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[900],
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: state.budget.values.length,
-                      itemBuilder: (context, index) {
-                        final item = state.budget.values[index];
-                        return ListTile(
-                          title: Text(
-                            '${item.description} - ${controller.dateFormater(item.date).split(' ')[0]}',
+                  child: Column(
+                    children: [
+                      HomeCard(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        label: 'Saldo disponível',
+                        value: state.total.toCurrency,
+                        valueFontSize: 22,
+                        onLongPress: () => showConfirmDialog(
+                          context,
+                          'Deseja realmente apagar tudo?',
+                          confirmButton: controller.deleteBudget,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          HomeCard(
+                            height: 60,
+                            width: MediaQuery.sizeOf(context).width * 0.38,
+                            padding: const EdgeInsets.symmetric(vertical: 6),
+                            color: Colors.grey[800],
+                            label: 'Crédito',
+                            value: state.creditsTotal.toCurrency,
+                            valueFontSize: 18,
+                            onTap: () {
+                              controller.setDateTime(DateTime.now());
+                              showHomeBottomSheet(
+                                context: context,
+                                label: 'Nova Entrada',
+                                confirmButton: () => controller.saveBudget(ValueType.credit),
+                              );
+                            },
                           ),
-                          subtitle: Text(item.value.toCurrency),
-                          leading: Icon(
-                            item.type == ValueType.credit ? Icons.arrow_downward : Icons.arrow_upward,
-                            color: item.type == ValueType.credit ? Colors.green : Colors.red,
+                          HomeCard(
+                            height: 60,
+                            width: MediaQuery.sizeOf(context).width * 0.38,
+                            padding: const EdgeInsets.symmetric(vertical: 6),
+                            color: Colors.grey[800],
+                            label: 'Débito',
+                            value: state.debitsTotal.toCurrency,
+                            valueFontSize: 18,
+                            onTap: () {
+                              controller.setDateTime(DateTime.now());
+                              showHomeBottomSheet(
+                                context: context,
+                                label: 'Nova Saída',
+                                confirmButton: () => controller.saveBudget(ValueType.debit),
+                              );
+                            },
                           ),
-                          onTap: () {
-                            controller.selectBudgetValue(index);
-                            showHomeBottomSheet(
-                              context: context,
-                              label: item.type == ValueType.credit ? 'Editar Entrada' : 'Editar Saída',
-                              confirmButton: () => controller.editBudgetValue(index),
-                            );
-                          },
-                          onLongPress: () => showConfirmDialog(
-                            context,
-                            'Deseja realmente apagar?',
-                            confirmButton: () => controller.deleteBudgetValue(index),
-                          ),
-                        );
-                      },
-                    ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Expanded(
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => const Divider(
+                      color: Colors.white12,
+                    ),
+                    itemCount: state.budget.values.length,
+                    itemBuilder: (context, index) {
+                      final item = state.budget.values[index];
+                      return HomeTile(
+                        description: item.description,
+                        value: item.value.toCurrency,
+                        date: item.date,
+                        type: item.type,
+                        onTap: () {
+                          controller.selectBudgetValue(index);
+                          showHomeBottomSheet(
+                            context: context,
+                            label: item.type == ValueType.credit ? 'Editar Entrada' : 'Editar Saída',
+                            confirmButton: () => controller.editBudgetValue(index),
+                          );
+                        },
+                        onLongPress: () => showConfirmDialog(
+                          context,
+                          'Deseja realmente apagar?',
+                          confirmButton: () => controller.deleteBudgetValue(index),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         );

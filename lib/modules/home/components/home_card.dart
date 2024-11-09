@@ -6,8 +6,10 @@ class HomeCard extends StatelessWidget {
     required this.label,
     required this.value,
     this.margin,
+    this.padding,
     this.height,
     this.width,
+    this.color,
     this.onTap,
     this.labelFontSize,
     this.valueFontSize,
@@ -20,6 +22,8 @@ class HomeCard extends StatelessWidget {
   final double? valueFontSize;
   final double? height;
   final double? width;
+  final Color? color;
+  final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
   final void Function()? onTap;
   final void Function()? onLongPress;
@@ -33,20 +37,20 @@ class HomeCard extends StatelessWidget {
         height: height,
         width: width,
         margin: margin,
-        padding: const EdgeInsets.all(16),
+        padding: padding,
         decoration: BoxDecoration(
-          color: Colors.blue[900],
+          color: color,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
           children: [
             Text(
               label,
-              style: TextStyle(fontSize: labelFontSize ?? 16),
+              style: TextStyle(fontSize: labelFontSize),
             ),
             Text(
               value,
-              style: TextStyle(fontSize: valueFontSize ?? 16),
+              style: TextStyle(fontSize: valueFontSize),
             ),
           ],
         ),
